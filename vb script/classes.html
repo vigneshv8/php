@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="x-ua-compatible" content="IE=10">
+</head>
+<body>
+<script language="vbscript">
+ Dim oNode
+   Set oNode = New Node
+
+   document.writeln("oNode.Title: " & oNode.Title)
+   document.writeln("oNode.Email: " & oNode.Email)
+   document.writeln("oNode.DomainRegExp.Pattern: " _
+      & oNode.DomainRegExp.Pattern)
+
+   oNode.Title = "Microsoft Help Desk"
+   oNode.Email = "help@microsoft.com"
+
+   Set oRegExp = New RegExp
+   oRegExp.Pattern = "\.\w+$"
+   Set oNode.DomainRegExp = oRegExp
+
+   document.writeln("oNode.Title: " & oNode.Title)
+   document.writeln("oNode.Email: " & oNode.Email)
+   document.writeln("oNode.DomainRegExp.Pattern: " _
+      & oNode.DomainRegExp.Pattern)
+Class Node
+   Public Title
+   Private myObject
+   Private User, Domain
+
+   Public Property Let Email(sEmail)
+      at = InStr(sEmail, "@")
+      If at>0 Then
+         User = Mid(sEmail, 1, at-1)
+         Domain = Mid(sEmail, at+1, Len(sEmail)-at)
+      End If
+   End Property
+
+   Public Property Get Email()
+      Email = User & "@" & Domain
+   End Property
+
+   Public Property Set DomainRegExp(oRegExp)
+      Set myObject = oRegExp
+   End Property
+
+   Public Property Get DomainRegExp()
+      Set DomainRegExp = myObject
+   End Property
+   
+   Sub Class_Initialize()
+      Title = "Yahoo Information Center"
+      User = "info"
+      Domain = "yahoo.com"
+      Set myObject = New RegExp
+      myObject.Pattern = "\..+$"
+   End Sub 
+End Class
+</script>
+</body>
+</html>
